@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodeport
+  labels:
+    app: nginx-app
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: nginx-app
+  template:
+    metadata:
+      labels:
+        app: nginx-app
+    spec:
+      volumes:
+      - name: host-volume
+        persistentVolumeClaim:
+          claimName: pv-hostvolume
+      containers:
+      - name: nodecont
+        image: nginx
+        volumeMounts:
+        - name: host-volume
+          mountPath: /mydata    
+
